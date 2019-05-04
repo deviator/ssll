@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/ssll
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+ssll-test-*
+*.exe
+*.o
+*.obj
+*.lst

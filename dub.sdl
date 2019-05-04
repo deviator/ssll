@@ -1,0 +1,5 @@
+name "ssll"
+description "Simple shared library load"
+authors "deviator"
+copyright "Copyright © 2019, deviator"
+license "MIT"
