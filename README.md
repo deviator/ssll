@@ -61,3 +61,7 @@ mixin apiSymbols; // ssll call: define function pointers
     ...
 }
 ```
+
+Real example:
+* [sdutil](https://github.com/deviator/sdutil)
+* [mosquittod](https://github.com/deviator/mosquittod)
