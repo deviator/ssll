@@ -65,7 +65,7 @@ void cleanupMySharedLib()
 
 * [sdutil](https://github.com/deviator/sdutil)
 * [mosquittod](https://github.com/deviator/mosquittod)
-* [libssh](https://github.com/deviator/mosquittod)
+* [libssh](https://github.com/deviator/libssh)
 
 ## SSLL is compatible with `-betterC`
 
