@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+*-test-*
+*.exe
+*.o
+*.obj
+*.lst
+sslltest
+makefile

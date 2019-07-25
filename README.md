@@ -10,13 +10,13 @@ module mysharedlib;
 
 import ssll;
 
-import std.exception : enforce;
+mixin SSLL_INIT; // define function pointers and loadApiSymbols function
 
 // define possible names of lib
 enum libNames = [ "mysharedlib.so", "mysharedlib.so.0", "mysharedlib.so.0.1", ];
 
 // pointer to library
-private __gshared void* lib;
+private LibHandler lib;
 
 void initMySharedLib()
 {
@@ -30,7 +30,7 @@ void initMySharedLib()
         if (lib !is null) break;
     }
 
-    enforce(lib, "failed to load mysharedlib");
+    if (lib is null) assert(0, "failed to load mysharedlib");
     
     // ssll call: load symbols from shared library to functions pointers
     loadApiSymbols();
@@ -44,24 +44,29 @@ void cleanupMySharedLib()
     unloadLibrary(lib); // ssll call: close lib and set pointer null
 }
 
-mixin apiSymbols; // ssll call: define function pointers
-
 /+
   place to define or import types
  +/
 
 // define all needed functions
-@api("lib") // "lib" is name of __gshared pointer to library
+@api("lib") // "lib" is name of library pointer
 {
     // name of functions must match exactly with function in library
-    void mysharedlib_init() { mixin(rtlib); /* ssll mixin */ }
-    void mysharedlib_cleanup() { mixin(rtlib); }
+    void mysharedlib_init() { mixin(SSLL_CALL); }
+    void mysharedlib_cleanup() { mixin(SSLL_CALL); }
 
-    float mysharedlib_somefunc(int a, float b) { mixin(rtlib); }
+    // you must specify names of function parameters, thouse used in SSLL_CALL
+    float mysharedlib_somefunc(int a, float b) { mixin(SSLL_CALL); }
     ...
 }
 ```
 
-Real example:
+## Real examples:
+
 * [sdutil](https://github.com/deviator/sdutil)
 * [mosquittod](https://github.com/deviator/mosquittod)
+* [libssh](https://github.com/deviator/mosquittod)
+
+## SSLL is compatible with `-betterC`
+
+See [example](./example)
