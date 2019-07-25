@@ -55,7 +55,7 @@ void cleanupMySharedLib()
     void mysharedlib_init() { mixin(SSLL_CALL); }
     void mysharedlib_cleanup() { mixin(SSLL_CALL); }
 
-    // you must specify names of function parameters, thouse used in SSLL_CALL
+    // you must specify names of function parameters because they used in SSLL_CALL
     float mysharedlib_somefunc(int a, float b) { mixin(SSLL_CALL); }
     ...
 }
