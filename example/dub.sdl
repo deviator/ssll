@@ -1,3 +1,4 @@
 name "sslltest"
 dependency "ssll" path=".."
 dflags "-betterC"
+subConfiguration "ssll" "check-loading-symbols-on-call"

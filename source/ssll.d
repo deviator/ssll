@@ -74,6 +74,12 @@ template commaSeparated(string[] arr)
 enum SSLL_CALL = q{
     enum __dimmy_symbol__;
     alias __self_function__ = AliasSeq!(__traits(parent, __dimmy_symbol__))[0];
+    enum __self_function_name__ = __traits(identifier, __self_function__);
+    enum __function_pointer_name__ = apiFunctionPointerName!(__self_function_name__);
+    version (ssllCheckLoadingSymbols)
+        if (mixin(__function_pointer_name__ ~ " is null"))
+            assert(0, `function '` ~ __self_function_name__ ~ `' not loaded, call '`
+                     ~ __MODULE__ ~ `.loadApiSybols() before`);
     mixin((is(ReturnType!__self_function__ == void) ? "" : "return ") ~
             apiFunctionPointerName!(__traits(identifier, __self_function__)) ~
         "(" ~ commaSeparated!([ParameterIdentifierTuple!__self_function__]) ~ ");");

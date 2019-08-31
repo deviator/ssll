@@ -33,7 +33,8 @@ void initMySharedLib()
     if (lib is null) assert(0, "failed to load mysharedlib");
     
     // ssll call: load symbols from shared library to functions pointers
-    loadApiSymbols();
+    // assert if can't load symbol
+    loadApiSymbols(LoadApiSymbolsVerbose.assertion);
 
     mysharedlib_init(); // some init function from mysharedlib
 }

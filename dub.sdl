@@ -5,3 +5,10 @@ copyright "Copyright © 2019, deviator"
 license "MIT"
 
 dflags "-betterC"
+
+configuration "default" {
+}
+
+configuration "check-loading-symbols-on-call" {
+    versions "ssllCheckLoadingSymbols"
+}
