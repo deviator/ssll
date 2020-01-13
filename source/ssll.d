@@ -5,8 +5,8 @@ import core.stdc.stdlib : free, malloc;
 import core.stdc.string : memcpy;
 
 public import std.meta : AliasSeq;
-public import std.traits : hasUDA, getUDAs,
-    ReturnType, Parameters, ParameterIdentifierTuple;
+public import std.traits : hasUDA, getUDAs, ReturnType, Parameters,
+                           ParameterIdentifierTuple;
 
 version (Posix)
 {
@@ -23,12 +23,27 @@ else version (Windows)
 }
 else static assert(0, "unknown platform");
 
-@nogc nothrow extern(C):
-
-struct ApiUDA { string libname; }
+///
+auto api(string lname="lib", Linkage linkage=Linkage.c) @property
+{ return ApiUDA(lname, linkage); }
 
 ///
-auto api(string lname="lib") @property { return ApiUDA(lname); }
+auto api(Linkage linkage) @property { return ApiUDA("lib", linkage); }
+
+///
+enum Linkage : string
+{
+    c = "C", ///
+    d = "D", ///
+    cpp = "C++", ///
+    windows = "Windows", ///
+    objC = "Objective-C", ///
+    system = "System" ///
+}
+
+@nogc nothrow extern(C):
+
+struct ApiUDA { string libname; Linkage linkage; }
 
 ///
 LibHandler loadLibrary(string name)
@@ -57,7 +72,7 @@ void unloadLibrary(ref LibHandler lib)
     lib = null;
 }
 
-/// used in rtLib mixin
+/// used in SSLL_CALL mixin
 template commaSeparated(string[] arr)
 {
     template r(string[] a)
@@ -85,13 +100,15 @@ enum SSLL_CALL = q{
         "(" ~ commaSeparated!([ParameterIdentifierTuple!__self_function__]) ~ ");");
 };
 
+///
 enum LoadApiSymbolsVerbose
 {
-    none,
-    message,
-    assertion
+    none, ///
+    message, ///
+    assertion ///
 }
 
+///
 mixin template SSLL_INIT()
 {
     alias apiFuncs = funcsByUDA!(__traits(parent, loadApiSymbols), ApiUDA);
@@ -163,7 +180,9 @@ mixin template funcPointers(funcs...)
     else static if (funcs.length == 1)
     {
         alias __this = funcs[0];
-        mixin(`private __gshared extern(C) @nogc nothrow ReturnType!__this function(Parameters!__this) ` ~
+        enum linkage = getUDAs!(__this, ApiUDA)[$-1].linkage;
+        mixin(`private __gshared extern(`~ linkage ~
+        `) @nogc nothrow ReturnType!__this function(Parameters!__this) ` ~
                 apiFunctionPointerName!(__traits(identifier, __this)) ~ `;`);
     }
     else

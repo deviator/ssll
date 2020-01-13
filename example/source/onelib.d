@@ -34,7 +34,7 @@ bool loadOneLib()
 
 void unloadOneLib() { unloadLibrary(lib); }
 
-@api // "lib" is default parameter
+@api(Linkage.c) // "lib" is default parameter
 {
     int gtk_get_major_version() { mixin(SSLL_CALL); }
     int gtk_get_minor_version() { mixin(SSLL_CALL); }
