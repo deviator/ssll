@@ -41,7 +41,7 @@ enum Linkage : string
     system = "System" ///
 }
 
-@nogc nothrow extern(C):
+@nogc nothrow:
 
 struct ApiUDA { string libname; Linkage linkage; }
 
