@@ -1,10 +1,10 @@
 name "ssll"
 description "Simple shared library load (betterC compatible)"
 authors "deviator"
-copyright "Copyright © 2019, deviator"
+copyright "Copyright © 2019-2020, deviator"
 license "MIT"
 
-dflags "-betterC"
+dflags "-betterC" "-dip1008"
 
 configuration "default" {
 }

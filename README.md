@@ -49,8 +49,12 @@ void cleanupMySharedLib()
   place to define or import types
  +/
 
-// define all needed functions
-@api("lib") // "lib" is name of library pointer
+/+ define all needed functions
+   
+    "lib" is name of library pointer
+    Linkage.c is linkage of pointer for loading functions addresses
+ +/
+@api("lib", Linkage.c)
 {
     // name of functions must match exactly with function in library
     void mysharedlib_init() { mixin(SSLL_CALL); }
@@ -62,12 +66,17 @@ void cleanupMySharedLib()
 }
 ```
 
+## SSLL is compatible with `-betterC`
+
+See [example](./example)
+
 ## Real examples:
 
 * [sdutil](https://github.com/deviator/sdutil)
 * [mosquittod](https://github.com/deviator/mosquittod)
 * [libssh](https://github.com/deviator/libssh)
 
-## SSLL is compatible with `-betterC`
+## Alternatives
 
-See [example](./example)
+* [bindbc](https://github.com/BindBC/bindbc-loader) -- from Derelict creators (betterC compatible)
+* [dynamic](https://github.com/s-ludwig/dynamic) -- suitable for existing bindings
